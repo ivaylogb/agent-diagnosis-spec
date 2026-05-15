@@ -28,11 +28,7 @@ This spec captures the structural opinions that make those outputs
 trustworthy: what a Finding is, what counts as evidence, what a structured
 edit is and when one is honestly impossible, the four-layer causal model,
 and the grounding discipline that separates a diagnosis from generic
-best-practice advice. It was reverse-derived from three independently-built
-reference implementations (`agent-researcher`, `funnel-researcher`,
-`integration-watcher`) and one orchestrator (`pluma`); the shape they
-converged on without coordination is the evidence that the opinions here are
-load-bearing rather than incidental.
+best-practice advice.
 
 A tool conforms to this spec if its diagnosis output validates against the
 schemas, satisfies the grounding principles (§8), and passes the conformance
@@ -76,7 +72,7 @@ A **conforming tool** is one whose emitted diagnoses are conforming
 diagnoses, and which assigns every Finding to exactly one of the four layers
 (§5) using a domain-specific instantiation of the abstract model.
 
-The conformance suite (built in Phase 3) runs against the canonical
+The conformance suite runs against the canonical
 reference outputs:
 
 - `agent-researcher` — `examples/issue_107/report.md`
@@ -281,7 +277,7 @@ rejected for omitting them.
 to identify the file is **NOT spec-compliant**: the spec requires citations
 to be unambiguous and verifiable without prose interpretation. A source tool
 that emits bare ranges will fail conformance; that is the correct signal,
-surfaced by the Phase 3 report, not a spec defect. (A genuinely
+surfaced by the conformance report, not a spec defect. (A genuinely
 file-less artifact such as a virtual error catalog is representable as
 `virtual_artifact`, not as a fileless `file_line`.)
 
@@ -371,8 +367,8 @@ tools that declare it.
 ## 10. Self-check discipline
 
 A conforming tool SHOULD run a pre-emission self-check. The **universal
-subset** below (the intersection of the reference tools' checks; checks 2–8
-of the Phase 1 comparison) is the normative discipline; GP1–GP4 capture the
+subset** below (the intersection of the reference tools' checks; checks 2–8)
+is the normative discipline; GP1–GP4 capture the
 principle-level members.
 
 1. Every Finding is structurally distinct (collapse-if-same-edit). [GP3]
@@ -395,7 +391,7 @@ extensions but are NOT part of the universal subset.
 
 ## 11. Reference implementations
 
-These are the implementations from which the spec was reverse-derived. They
+These reference implementations
 are the source of truth for what the shared opinion *is*; where the spec and
 a reference diverge, the divergence is triaged (§3), not assumed to be the
 reference's fault.
