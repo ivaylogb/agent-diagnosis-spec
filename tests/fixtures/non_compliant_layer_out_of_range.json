@@ -1,0 +1,12 @@
+{
+  "id": "H1",
+  "title": "Layer 5 does not exist",
+  "layer": 5,
+  "claim": "A cause that the tool tried to place outside the four-layer model.",
+  "evidence": [
+    { "type": "file_line", "file": "a.py", "line_start": 1, "line_end": 1 }
+  ],
+  "applyable": false,
+  "reason": "n/a",
+  "verification": "n/a"
+}

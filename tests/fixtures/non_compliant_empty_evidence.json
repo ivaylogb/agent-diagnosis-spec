@@ -1,0 +1,10 @@
+{
+  "id": "H1",
+  "title": "evidence array is empty (violates minimum-credibility floor)",
+  "layer": 3,
+  "claim": "No evidence backs this claim.",
+  "evidence": [],
+  "applyable": false,
+  "reason": "n/a",
+  "verification": "n/a"
+}

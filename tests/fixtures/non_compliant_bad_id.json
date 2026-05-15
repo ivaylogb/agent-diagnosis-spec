@@ -1,0 +1,12 @@
+{
+  "id": "1",
+  "title": "id does not match the prefix+index pattern",
+  "layer": 2,
+  "claim": "The id '1' has no origin prefix.",
+  "evidence": [
+    { "type": "file_line", "file": "a.py", "line_start": 1, "line_end": 1 }
+  ],
+  "applyable": false,
+  "reason": "n/a",
+  "verification": "n/a"
+}

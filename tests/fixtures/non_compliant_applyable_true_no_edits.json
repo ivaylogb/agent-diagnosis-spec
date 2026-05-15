@@ -1,0 +1,11 @@
+{
+  "id": "H1",
+  "title": "applyable true but no structured_edits (violates D3)",
+  "layer": 2,
+  "claim": "Claims to be applyable but provides no edits.",
+  "evidence": [
+    { "type": "file_line", "file": "a.py", "line_start": 1, "line_end": 1 }
+  ],
+  "applyable": true,
+  "verification": "metric moves."
+}

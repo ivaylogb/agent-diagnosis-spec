@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agent-diagnosis-spec"
+version = "0.1.0"
+description = "JSON Schema, prose specification, and conformance suite for agent-diagnostic tool outputs. v0.1 (experimental)."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Ivaylo Bahtchevanov" }]
+keywords = ["agent", "diagnosis", "spec", "json-schema", "conformance"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+  "jsonschema>=4.18",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7",
+]
+
+[project.urls]
+Homepage = "https://github.com/ivaylogb/agent-diagnosis-spec"
+Specification = "https://github.com/ivaylogb/agent-diagnosis-spec/blob/main/spec/v0.1/SPEC.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agent_diagnosis_spec"]
+
+# Ship the normative schemas inside the wheel so an installed package is
+# self-contained (schemas.py resolves this as the packaged `_spec` dir).
+[tool.hatch.build.targets.wheel.force-include]
+"spec" = "agent_diagnosis_spec/_spec"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/",
+  "spec/",
+  "tests/",
+  "README.md",
+  "LICENSE",
+  "pyproject.toml",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

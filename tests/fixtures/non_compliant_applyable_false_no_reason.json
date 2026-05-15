@@ -1,0 +1,11 @@
+{
+  "id": "H1",
+  "title": "applyable false but no reason (violates D3)",
+  "layer": 1,
+  "claim": "Declares non-applyable but omits the required reason.",
+  "evidence": [
+    { "type": "eval_reference", "scenario_id": "issue 107", "expected": "unknown", "observed": "bug" }
+  ],
+  "applyable": false,
+  "verification": "n/a"
+}

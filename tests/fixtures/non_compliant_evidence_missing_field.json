@@ -1,0 +1,12 @@
+{
+  "id": "H1",
+  "title": "file_line evidence missing the required line_end field",
+  "layer": 3,
+  "claim": "An incomplete file_line evidence item.",
+  "evidence": [
+    { "type": "file_line", "file": "a.py", "line_start": 10 }
+  ],
+  "applyable": false,
+  "reason": "n/a",
+  "verification": "n/a"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "H1",
+  "title": "The mixed-signals tie-break rule is buried below the intent definitions",
+  "layer": 3,
+  "claim": "The classification prompt contains the correct tie-break rule but it sits after the per-intent signal lists, so the model commits to the prominent match before reaching it.",
+  "evidence": [
+    { "type": "file_line", "file": "classification.j2", "line_start": 44, "line_end": 44 },
+    { "type": "eval_reference", "scenario_id": "issue 107", "expected": "unknown", "observed": "bug" }
+  ],
+  "applyable": true,
+  "structured_edits": [
+    {
+      "file": "classification.j2",
+      "action": "insert_after",
+      "at_line": 4,
+      "new_content": "Before classifying, check for conflicting frames."
+    }
+  ],
+  "verification": "issue 107 predicted_intent flips bug->unknown; pass_rate 6/7 -> 7/7."
+}
