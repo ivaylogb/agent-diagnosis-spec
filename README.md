@@ -8,9 +8,9 @@ was the first orchestrator.
 It is not documentation about those tools. It is a **standard**: the JSON
 Schemas are normative, the conformance suite is normative, and the prose in
 `spec/v0.1/SPEC.md` is the reference reading that explains the model the
-schemas encode. The spec was reverse-derived from four independently-built
-tools — the shape they converged on without coordinating is the evidence
-that the opinions here are load-bearing rather than incidental.
+schemas encode. The spec defines the Finding object, the four-layer causal
+model, the structured-edit format, the evidence requirements, and the
+grounding principles that agent-diagnosis tools share.
 
 ## What the spec governs
 
@@ -45,8 +45,8 @@ src/agent_diagnosis_spec/
   parser.py                   vendored minimal report parser
   schemas.py                  schema loader
   validators.py               validate_finding / validate_structured_edit
-  conformance.py              run_conformance_suite (Phase 3 wires the suite)
-tests/                        conformance + validator tests (Phase 3)
+  conformance.py              run_conformance_suite
+tests/                        conformance + validator tests
 ```
 
 The Python package vendors a ~60-line parser so the spec is self-contained
