@@ -1,0 +1,12 @@
+{
+  "id": "H1",
+  "title": "evidence item uses a type outside the five-variant union",
+  "layer": 3,
+  "claim": "A screenshot is not one of the five evidence variants.",
+  "evidence": [
+    { "type": "screenshot", "url": "https://example.com/x.png" }
+  ],
+  "applyable": false,
+  "reason": "n/a",
+  "verification": "n/a"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "H1",
+  "title": "Missing the required claim field",
+  "layer": 3,
+  "evidence": [
+    { "type": "file_line", "file": "classification.j2", "line_start": 44, "line_end": 44 }
+  ],
+  "applyable": false,
+  "reason": "Requires a new module, not an in-place edit.",
+  "verification": "metric X moves by Y."
+}
