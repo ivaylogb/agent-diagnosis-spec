@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ivaylogb.github.io/agent-diagnosis-spec/v0.1/structured-edit.schema.json",
+  "title": "StructuredEdit",
+  "description": "One in-place mechanical edit. The required-field set per action is the intersection of the three reference appliers (agent-researcher, funnel-researcher, integration-watcher). Per-applier hardening (snapshots, anchor post-passes, virtual-name resolution) is implementation detail and is not part of this wire format. Arithmetic constraints (from_line_start <= from_line_end; a move's to_line outside its source range) are enforced by appliers and the conformance suite, not by this schema.",
+  "type": "object",
+  "required": ["action", "file"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["replace", "insert_after", "delete", "move"]
+    },
+    "file": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Concrete file the edit targets, as presented to the diagnosing tool."
+    },
+    "from_line_start": { "type": "integer", "minimum": 1 },
+    "from_line_end": { "type": "integer", "minimum": 1 },
+    "at_line": { "type": "integer", "minimum": 1 },
+    "to_line": { "type": "integer", "minimum": 1 },
+    "expected_content": {
+      "type": "string",
+      "description": "Verbatim pre-image of the cited range (the fail-closed guard). Required for actions that touch existing content."
+    },
+    "new_content": {
+      "type": "string",
+      "description": "Verbatim replacement/insertion text. Required for actions that write new content."
+    }
+  },
+  "oneOf": [
+    {
+      "title": "replace",
+      "additionalProperties": false,
+      "properties": {
+        "action": { "const": "replace" },
+        "file": { "type": "string", "minLength": 1 },
+        "from_line_start": { "type": "integer", "minimum": 1 },
+        "from_line_end": { "type": "integer", "minimum": 1 },
+        "expected_content": { "type": "string" },
+        "new_content": { "type": "string" }
+      },
+      "required": [
+        "action",
+        "file",
+        "from_line_start",
+        "from_line_end",
+        "expected_content",
+        "new_content"
+      ]
+    },
+    {
+      "title": "insert_after",
+      "additionalProperties": false,
+      "properties": {
+        "action": { "const": "insert_after" },
+        "file": { "type": "string", "minLength": 1 },
+        "at_line": { "type": "integer", "minimum": 1 },
+        "new_content": { "type": "string" }
+      },
+      "required": ["action", "file", "at_line", "new_content"]
+    },
+    {
+      "title": "delete",
+      "additionalProperties": false,
+      "properties": {
+        "action": { "const": "delete" },
+        "file": { "type": "string", "minLength": 1 },
+        "from_line_start": { "type": "integer", "minimum": 1 },
+        "from_line_end": { "type": "integer", "minimum": 1 },
+        "expected_content": { "type": "string" }
+      },
+      "required": [
+        "action",
+        "file",
+        "from_line_start",
+        "from_line_end",
+        "expected_content"
+      ]
+    },
+    {
+      "title": "move",
+      "additionalProperties": false,
+      "properties": {
+        "action": { "const": "move" },
+        "file": { "type": "string", "minLength": 1 },
+        "from_line_start": { "type": "integer", "minimum": 1 },
+        "from_line_end": { "type": "integer", "minimum": 1 },
+        "to_line": { "type": "integer", "minimum": 1 },
+        "expected_content": { "type": "string" }
+      },
+      "required": [
+        "action",
+        "file",
+        "from_line_start",
+        "from_line_end",
+        "to_line",
+        "expected_content"
+      ]
+    }
+  ]
+}

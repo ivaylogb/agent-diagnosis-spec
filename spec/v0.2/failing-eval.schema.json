@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ivaylogb.github.io/agent-diagnosis-spec/v0.2/failing-eval.schema.json",
+  "title": "FailingEval",
+  "description": "One unit of failure that a diagnosis tool consumes when the failure signal is an eval verdict. Adapters from Braintrust, LangSmith, OpenAI Evals, Inspect AI, promptfoo, deepeval, or in-house eval runners target this shape. agent-researcher's loader reads this as input; the spec lifts it from an implicit Python contract to a public schema so adapters can target it without reading source.",
+  "type": "object",
+  "required": [
+    "scenario_id",
+    "expected",
+    "predicted",
+    "passed"
+  ],
+  "properties": {
+    "scenario_id": {
+      "type": "string",
+      "description": "Stable identifier for the eval row within its source. Combined with experiment_id in metadata, must uniquely identify the failing case."
+    },
+    "expected": {
+      "type": "string",
+      "description": "The label or output the eval was looking for. Structured values (dicts, lists) are compact-JSON-encoded; bare strings pass through."
+    },
+    "predicted": {
+      "type": "string",
+      "description": "What the agent actually produced. Same encoding rule as `expected`."
+    },
+    "predicted_confidence": {
+      "type": ["number", "null"],
+      "description": "The primary scorer's score on the predicted output (when scoring is numeric). Null when the scorer is boolean or the row has no primary scorer."
+    },
+    "passed": {
+      "type": "boolean",
+      "description": "Always false for records emitted by an adapter — this schema is for failures only. Present and explicit so the diagnostic agent doesn't have to infer."
+    },
+    "score": {
+      "type": ["number", "null"],
+      "description": "Numeric score from the primary scorer. Mirrors predicted_confidence; both are kept for clarity."
+    },
+    "scorer": {
+      "type": ["string", "null"],
+      "description": "Name of the primary scorer used to decide pass/fail for this row."
+    },
+    "scorer_signature": {
+      "type": "object",
+      "description": "Per-scorer pass/fail signature. Captures the pattern of which scorers a row failed, not just the primary verdict. The diagnostic agent reads this — fails-factuality-passes-exact-match is a different bug than fails-exact-match-passes-factuality.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["score", "passed"],
+        "properties": {
+          "score": {"type": ["number", "null"]},
+          "passed": {"type": "boolean"},
+          "is_primary": {"type": "boolean"}
+        }
+      }
+    },
+    "spans": {
+      "description": "The agent's actual execution trace for this row, when the eval was instrumented. Adapters that source this from Braintrust, LangSmith, or an OTel-wrapped agent harness should populate it. Shape is opaque to the spec — pass through what the source provides. The single highest-leverage diagnostic input when present: without spans, the diagnoser reads source alone; with spans, it can localize a defect to the step of the agent's reasoning where it surfaced.",
+      "type": ["array", "object", "null"]
+    },
+    "cluster_size": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "When a pre-clustering pass collapsed equivalent failures, the number of rows in this representative's cluster. Diagnostic agent uses this to prioritize: a cluster of 18 is a systemic defect; a cluster of 1 is scattershot."
+    },
+    "cluster_member_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "scenario_ids of every row this representative is standing in for. Audit trail for the clustering pass."
+    },
+    "input": {
+      "description": "The eval scenario's input as the source platform recorded it. Free-form — the adapter passes it through.",
+      "type": ["string", "object", "array", "null"]
+    },
+    "output": {
+      "description": "Mirrors `predicted` but in the source platform's native shape (often structured rather than stringified).",
+      "type": ["string", "object", "array", "null"]
+    },
+    "notes": {
+      "type": "string",
+      "description": "Human-readable summary of the failure context — scorer, score, threshold, source. Adapters generate this; agent-researcher renders it into the diagnostic prompt."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Adapter and source metadata. Conventional keys: experiment_id, experiment_name, project_name, row_id, agent_revision (git SHA the agent was at when the eval ran), tags. Adapters MUST set agent_revision when known — otherwise the diagnosis target may drift from the code that actually produced the failure.",
+      "properties": {
+        "experiment_id": {"type": "string"},
+        "experiment_name": {"type": "string"},
+        "project_name": {"type": "string"},
+        "row_id": {"type": "string"},
+        "agent_revision": {
+          "type": "string",
+          "description": "Git SHA (or similar version identifier) for the agent source that produced this eval row. Required for trustworthy diagnosis — without it, the diagnoser may cite lines that have since moved."
+        }
+      },
+      "additionalProperties": true
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp from the source platform."
+    }
+  },
+  "additionalProperties": true
+}

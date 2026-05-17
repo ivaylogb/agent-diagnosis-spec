@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ivaylogb.github.io/agent-diagnosis-spec/v0.2/failing-eval-container.schema.json",
+  "title": "FailingEvalContainer",
+  "description": "The single-object envelope a FailingEval-emitting converter writes. Summary fields cover the whole experiment (not just the failures), so the audit trail survives the filter that produced the results array.",
+  "type": "object",
+  "required": ["results", "total", "passed", "pass_rate"],
+  "properties": {
+    "experiment_id": {"type": "string"},
+    "experiment_name": {"type": "string"},
+    "project_name": {"type": "string"},
+    "agent_revision": {
+      "type": ["string", "null"],
+      "description": "Git SHA (or similar) for the agent source the experiment was run against. When set on the container, individual FailingEval records inherit it; per-record agent_revision in metadata overrides."
+    },
+    "total": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total rows in the source experiment (passing + failing)."
+    },
+    "passed": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Rows that passed the filter — kept for audit even though they are not emitted."
+    },
+    "pass_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "passed / total, rounded to 4 decimal places."
+    },
+    "score_band": {
+      "type": "object",
+      "description": "The pass band the filter used. A row passed iff its primary scorer's score fell within [min, max]. The historical default {1.0, 1.0} is equivalent to a strict threshold of 1.0.",
+      "properties": {
+        "min": {"type": "number"},
+        "max": {"type": "number"}
+      },
+      "required": ["min", "max"]
+    },
+    "threshold": {
+      "type": "number",
+      "description": "Backward-compat alias for score_band.min. Kept so v0.1 readers still parse v0.2 output without modification."
+    },
+    "meets_threshold": {
+      "type": "boolean",
+      "description": "True iff the experiment had zero failing rows. The diagnostic agent skips empty containers without doing model work."
+    },
+    "clustered": {
+      "type": "boolean",
+      "description": "True when results have been collapsed by the cluster pre-pass. cluster_size and cluster_member_ids will be set on each record."
+    },
+    "cluster_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of distinct clusters in results when clustered=true."
+    },
+    "results": {
+      "type": "array",
+      "items": {"$ref": "failing-eval.schema.json"},
+      "description": "Every failing row, sorted by created ascending. Empty when meets_threshold=true."
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,55 @@
+{
+  "experiment_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "experiment_name": "routing_classifier_eval_v3",
+  "project_name": "support-router",
+  "total": 36,
+  "passed": 33,
+  "pass_rate": 0.9167,
+  "score_band": { "min": 1.0, "max": 1.0 },
+  "threshold": 1.0,
+  "meets_threshold": false,
+  "results": [
+    {
+      "scenario_id": "a1c0e007-0b36-4f1a-9c36-000000000007",
+      "expected": "cancellation",
+      "predicted": "technical_support",
+      "predicted_confidence": 0.66,
+      "passed": false,
+      "score": 0.0,
+      "scorer": "exact_match",
+      "scorer_signature": {
+        "exact_match": { "score": 0.0, "passed": false, "is_primary": true }
+      },
+      "notes": "Braintrust scorer 'exact_match' scored 0.0 (band [1.0, 1.0]). expected='cancellation' output='technical_support'. experiment 'routing_classifier_eval_v3' (f47ac10b-58cc-4372-a567-0e02b2c3d479), row a1c0e007-0b36-4f1a-9c36-000000000007.",
+      "created": "2026-05-14T09:07:00.000Z"
+    },
+    {
+      "scenario_id": "a1c0e021-0b36-4f1a-9c36-000000000021",
+      "expected": "billing",
+      "predicted": "general_inquiry",
+      "predicted_confidence": 0.62,
+      "passed": false,
+      "score": 0.0,
+      "scorer": "exact_match",
+      "scorer_signature": {
+        "exact_match": { "score": 0.0, "passed": false, "is_primary": true }
+      },
+      "notes": "Braintrust scorer 'exact_match' scored 0.0 (band [1.0, 1.0]). expected='billing' output='general_inquiry'. experiment 'routing_classifier_eval_v3' (f47ac10b-58cc-4372-a567-0e02b2c3d479), row a1c0e021-0b36-4f1a-9c36-000000000021.",
+      "created": "2026-05-14T09:21:00.000Z"
+    },
+    {
+      "scenario_id": "a1c0e028-0b36-4f1a-9c36-000000000028",
+      "expected": "technical_support",
+      "predicted": "general_inquiry",
+      "predicted_confidence": 0.0,
+      "passed": false,
+      "score": 0.0,
+      "scorer": "exact_match",
+      "scorer_signature": {
+        "exact_match": { "score": 0.0, "passed": false, "is_primary": true }
+      },
+      "notes": "Braintrust scorer 'exact_match' scored 0.0 (band [1.0, 1.0]). expected='technical_support' output='general_inquiry'. experiment 'routing_classifier_eval_v3' (f47ac10b-58cc-4372-a567-0e02b2c3d479), row a1c0e028-0b36-4f1a-9c36-000000000028.",
+      "created": "2026-05-14T09:28:00.000Z"
+    }
+  ]
+}

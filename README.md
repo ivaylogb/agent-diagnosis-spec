@@ -34,6 +34,25 @@ grounding principles that agent-diagnosis tools share.
 - **Grounding principles.** Chief among them: evidence must *affirmatively*
   support the claim — the existence of a rule does not prove its absence.
 
+## Spec versions
+
+The spec is versioned `MAJOR.MINOR`; each minor ships its own `spec/v0.x/`
+directory, retained and not rewritten (`spec/v0.1/SPEC.md` §12).
+
+- **v0.1** — the output contract. The `Finding` object, the four-layer
+  causal model, the structured-edit format, the five-variant evidence union,
+  the grounding principles, and the conformance suite over diagnosis output.
+  Schemas in `spec/v0.1/`.
+- **v0.2** — adds public input schemas for the eval-platform →
+  agent-researcher diagnostic path: `FailingEval` and
+  `FailingEvalContainer`. Adapters can now target a documented shape rather
+  than reverse-engineer Pluma's loader. Schemas in `spec/v0.2/`, examples in
+  `examples/v0.2/`, addendum prose in `spec/v0.2/SPEC-v0.2-ADDENDUM.md`.
+
+v0.2 is a strict superset of v0.1: the `Finding` and `StructuredEdit`
+schemas are carried into `spec/v0.2/` byte-identical, and v0.2 adds only an
+input contract. Every v0.1-conforming diagnosis still conforms under v0.2.
+
 ## Repository layout
 
 ```
@@ -41,6 +60,14 @@ spec/v0.1/
   SPEC.md                     prose specification (12 sections)
   finding.schema.json         normative Finding schema (draft-07)
   structured-edit.schema.json normative StructuredEdit schema (draft-07)
+spec/v0.2/
+  SPEC-v0.2-ADDENDUM.md       v0.2 addendum (additive over v0.1)
+  failing-eval.schema.json            normative FailingEval schema (draft-07)
+  failing-eval-container.schema.json  normative FailingEvalContainer schema
+  finding.schema.json         carried from v0.1, byte-identical
+  structured-edit.schema.json carried from v0.1, byte-identical
+examples/v0.2/                FailingEval(Container) example fixtures
+scripts/validate_v0.2.py      v0.2 input-schema conformance validator
 src/agent_diagnosis_spec/
   parser.py                   vendored minimal report parser
   schemas.py                  schema loader
@@ -73,7 +100,9 @@ satisfies the grounding principles, and passes the conformance suite. The
 suite runs against the canonical reference outputs of agent-researcher,
 funnel-researcher, and integration-watcher. If a canonical output fails, the
 failure is triaged — tighten the tool or loosen the spec; reality drives the
-call, not the spec's prior. 39 tests; all three canonical examples pass.
+call, not the spec's prior. 44 tests; all three canonical examples pass, and
+the v0.2 input fixtures plus Pluma's Braintrust golden validate against the
+v0.2 schemas.
 
 During initial conformance testing the suite caught a citation-precision
 issue in one of the canonical reference reports — a bare-range citation that
@@ -87,6 +116,11 @@ The spec is doing real work.
 **v0.1 — experimental.** Breaking changes are expected and will be
 versioned (`spec/v0.1/SPEC.md` §12). Build against a pinned `v0.x`. The
 Pluma cross-tool report shape is out of scope for v0.1.
+
+**v0.2 — draft, additive.** `FailingEval` and `FailingEvalContainer` are
+normative and carry a conformance validator (`scripts/validate_v0.2.py`).
+`FunnelDropoff` and `TraceCohort` are named as future work in `ROADMAP.md`,
+not yet drafted.
 
 ## Reference implementations
 
